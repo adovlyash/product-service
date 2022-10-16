@@ -23,6 +23,12 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs16.x
+  environment:
+    DB_HOST: 
+    DB_PORT: 
+    DB_NAME: 
+    DB_USERNAME: 
+    DB_PASSWORD:
 
 # you can overwrite defaults here
   stage: dev
@@ -80,6 +86,14 @@ functions:
       - httpApi:
           path: /products/{id}
           method: get
+
+  createProduct:
+    handler: ./handlers/createProduct.createProduct
+
+    events:
+      - httpApi:
+          path: /products
+          method: post
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

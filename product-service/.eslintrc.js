@@ -11,8 +11,8 @@ module.exports = {
         'jest/globals': true,
     },
     rules: {
-        'no-console': 'error',
+        'no-console': 'warn',
         'prettier/prettier': 'error',
     },
     plugins: ['jest', 'prettier'],
-}
+};

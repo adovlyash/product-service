@@ -24,5 +24,5 @@ export async function productsList() {
             image: 'https://zooshop-images.s3.amazonaws.com/products/Brit_Insect_Fish.webp',
             price: 52,
         },
-    ]
+    ];
 }
