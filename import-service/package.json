@@ -1,0 +1,24 @@
+{
+  "name": "zooshop-import-service",
+  "description": "Zooshop Import Service",
+  "version": "1.0.0",
+  "author": "Alexandra Dovlyash",
+  "scripts": {
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "deploy:dev": "sls deploy",
+    "deploy": "npm run lint:check && sls deploy"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.19.4",
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "serverless-webpack": "^5.10.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1241.0",
+    "csv-parser": "^3.0.0"
+  }
+}
