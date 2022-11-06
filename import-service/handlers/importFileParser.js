@@ -1,6 +1,7 @@
 'use strict';
 import AWS from 'aws-sdk';
 import csv from 'csv-parser';
+import stripBom from 'strip-bom-stream';
 
 const BUCKET = 'zooshop-import';
 
@@ -18,6 +19,7 @@ export const importFileParser = async (event) => {
         const s3 = new AWS.S3({
             region: 'us-east-1',
         });
+        const sqs = new AWS.SQS();
 
         for (const record of event.Records) {
             const s3Stream = s3
@@ -29,12 +31,19 @@ export const importFileParser = async (event) => {
 
             await new Promise((resolve, reject) => {
                 s3Stream
+                    .pipe(stripBom())
                     .pipe(csv())
                     .on('data', (data) => {
-                        console.log(
-                            '[Import File Parser lambda] csv data row:',
-                            data,
-                        );
+                        sqs.sendMessage({
+                            QueueUrl: process.env.SQS_URL,
+                            MessageBody: JSON.stringify(data),
+                        }, (err, data) => {
+                            if (err) {
+                              console.log("Error", err);
+                            } else {
+                              console.log("Success", data.MessageId);
+                            }
+                        });
                     })
                     .on('error', (error) => {
                         reject(error);
