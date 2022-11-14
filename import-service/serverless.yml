@@ -26,11 +26,16 @@ provider:
   environment: 
     SQS_URL: 'https://sqs.us-east-1.amazonaws.com/343875848202/catalogItemsQueue'
 
-# you can overwrite defaults here
   stage: dev
   region: us-east-1
 
-# you can add statements to the Lambda function's IAM Role here
+  httpApi:
+    cors: true
+    authorizers:
+      basicAuthorizer:
+        type: request
+        functionArn: arn:aws:lambda:us-east-1:343875848202:function:authorization-service-dev-basicAuthorizer
+
   iam:
     role:
       statements:
@@ -52,11 +57,13 @@ plugins:
 functions:
   importProductsFile:
     handler: ./handlers/importProductsFile.importProductsFile
-
     events:
       - httpApi:
           path: /import
           method: get
+          authorizer:
+            name: basicAuthorizer
+            
 
   importFileParser:
     handler: ./handlers/importFileParser.importFileParser

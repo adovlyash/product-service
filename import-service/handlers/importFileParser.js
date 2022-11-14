@@ -5,6 +5,11 @@ import stripBom from 'strip-bom-stream';
 
 const BUCKET = 'zooshop-import';
 
+const s3 = new AWS.S3({
+    region: 'us-east-1',
+});
+const sqs = new AWS.SQS();
+
 export const importFileParser = async (event) => {
     console.log('[Import File Parser lambda] incoming request, event:', event);
 
@@ -14,13 +19,7 @@ export const importFileParser = async (event) => {
             'Access-Control-Allow-Origin': '*',
         },
     };
-
     try {
-        const s3 = new AWS.S3({
-            region: 'us-east-1',
-        });
-        const sqs = new AWS.SQS();
-
         for (const record of event.Records) {
             const s3Stream = s3
                 .getObject({
