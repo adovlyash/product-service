@@ -1,6 +1,10 @@
 'use strict';
 import AWS from 'aws-sdk';
 
+const s3 = new AWS.S3({
+    region: 'us-east-1',
+});
+
 export const importProductsFile = async (event) => {
     console.log(
         '[Import Products File lambda] incoming request, event:',
@@ -16,9 +20,6 @@ export const importProductsFile = async (event) => {
 
     try {
         const fileName = event?.queryStringParameters?.name;
-        const s3 = new AWS.S3({
-            region: 'us-east-1',
-        });
         const filePath = `uploaded/${fileName}`;
 
         const params = {
